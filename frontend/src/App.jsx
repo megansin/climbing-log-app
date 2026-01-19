@@ -174,14 +174,24 @@ export default function App() {
             </div>
             </div>
 
-            {/* Row 1: Result & Angle */}
+            {/* Result & Angle */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Result</label>
                 <select 
                   className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-slate-700 font-medium"
+                  // value={newClimb.result}
+                  // onChange={(e) => setNewClimb({...newClimb, result: e.target.value}    
+                  // )}
                   value={newClimb.result}
-                  onChange={(e) => setNewClimb({...newClimb, result: e.target.value})}
+                  onChange={(e) => {
+                  const result = e.target.value;
+                  setNewClimb((prev) => ({
+                    ...prev,
+                    result,
+                    attempts: result === "Flash" ? 1 : prev.attempts,
+                  }));
+                  }}
                 >
                   <option>Flash</option>
                   <option>Send</option>
@@ -204,7 +214,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Row 2: Holds & Style */}
+            {/* Holds & Style */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Hold Type</label>
@@ -235,7 +245,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* Row 3: Attempts */}
+            {/* Attempts */}
             <div className="space-y-1">
                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Attempts</label>
                 <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 p-1 rounded-xl">
