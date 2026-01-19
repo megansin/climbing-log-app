@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models.user import User
 from database import db
 from passlib.context import CryptContext
@@ -39,3 +40,13 @@ def login(user: User):
 
     token = jwt.encode({"username": db_user["username"]}, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return {"access_token": token}
+
+security = HTTPBearer()
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload
+    except jwt.JWTError:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
