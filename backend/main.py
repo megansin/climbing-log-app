@@ -1,8 +1,10 @@
 from fastapi import FastAPI
-from routes import gyms
+from routes import gyms, auth
 
 app = FastAPI()
 app.include_router(gyms.router, prefix="/gyms", tags=["gyms"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
+
 
 @app.get("/")
 def root():
