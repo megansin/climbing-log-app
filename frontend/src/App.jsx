@@ -11,12 +11,29 @@ export default function App() {
   async function login(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const res = await fetch(`${API}/auth/token`, { method: "POST", body: formData });
+    const loginData = Object.fromEntries(formData);
+
+    const res = await fetch(`${API}/auth/login`, { 
+      method: "POST", 
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginData) 
+    });
+
     const data = await res.json();
-    if (data.access_token) {
-      localStorage.setItem("token", data.access_token);
-      setToken(data.access_token);
-    } else { alert("Login Failed"); }
+
+    if (res.ok) {
+      // Check if the token exists in the data object
+      if (data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        setToken(data.access_token);
+        console.log("Success! Token received.");
+      }
+    } else {
+      // If the backend returns an error (like 400 Bad Request), 
+      // FastAPI sends it in a 'detail' field.
+      alert("Error: " + (data.detail || "Unknown error"));
+      console.log("Full error data:", data); 
+    }
   }
 
   // --- 2. START SESSION ---
