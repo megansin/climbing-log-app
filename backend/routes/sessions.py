@@ -46,3 +46,31 @@ async def end_session(session_id: str, fatigue: int, user: dict = Depends(verify
         }}
     )
     return {"message": "Session finalized"}
+
+# 4. GET ALL SESSIONS (For History View)
+@router.get("/history")
+async def get_history(user: dict = Depends(verify_token)):
+    # 1. Get the cursor
+    cursor = db.sessions.find({"username": user["username"]}).sort("start_time", -1)
+    
+    # 2. Convert cursor to a list (Removing .to_list() and await)
+    history = list(cursor)
+    
+    # 3. Clean up MongoDB ObjectIds for JSON compatibility
+    for s in history:
+        s["id"] = str(s["_id"])
+        del s["_id"]
+        
+    return history
+
+# 5. DELETE SESSION
+@router.delete("/{session_id}")
+async def delete_session(session_id: str, user: dict = Depends(verify_token)):
+    # No await here if using standard pymongo
+    result = db.sessions.delete_one(
+        {"_id": ObjectId(session_id), "username": user["username"]}
+    )
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Session not found")
+    return {"message": "Session deleted"}
+    
