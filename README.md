@@ -53,7 +53,9 @@ npm run dev
 
 ### 3. Environment Variables
 Create a .env file in the /backend folder:
+
 MONGO_URI=your_mongodb_connection_string
+
 JWT_SECRET=your_super_secret_key
 
 ## 📐 API Architecture
