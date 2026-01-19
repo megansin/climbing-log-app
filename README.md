@@ -31,21 +31,25 @@ The application transforms raw climb logs into actionable insights using custom 
 ## Installation & Setup
 
 ### 1. Backend (FastAPI)
-```bash
+
+```
 cd backend
 python -m venv venv
 source venv/bin/activate  # Mac/Linux
 # .\venv\Scripts\activate # Windows
 pip install -r requirements.txt
 uvicorn main:app --reload
-```bash
+```
+
 
 ### 2. Frontend (React)
-```bash
+
+```
 cd frontend
 npm install
 npm run dev
-```bash
+```
+
 
 ### 3. Environment Variables
 Create a .env file in the /backend folder:
