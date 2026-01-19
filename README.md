@@ -62,8 +62,13 @@ JWT_SECRET=your_super_secret_key
 The backend follows a RESTful pattern with the following key endpoints:
 
 POST /auth/login: Authenticates user and returns JWT.
+
 GET /gyms/: Fetches available climbing locations.
+
 POST /sessions/start: Initializes a new climbing session.
+
 POST /sessions/{id}/climb: Appends a climb object to the active session.
+
 PATCH /sessions/{id}/end: Finalizes session with duration and fatigue metrics.
+
 GET /sessions/history: Retrieves all historical data for the user.
